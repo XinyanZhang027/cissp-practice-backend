@@ -68,4 +68,20 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/exercise", async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM exercise ORDER BY RAND() LIMIT 1"
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Exercise not found" });
+    }
+    const exercise = rows[0];
+    res.json(exercise);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = router;

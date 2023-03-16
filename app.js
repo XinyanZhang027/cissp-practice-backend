@@ -68,4 +68,14 @@ app.post("/login", async (req, res) => {
   res.send({ success: true, message: "Login successful", token });
 });
 
+// Exercise endpoint
+app.get("/exercise", async (req, res) => {
+  const conn = await mysql.createConnection(config);
+  const [rows] = await conn.execute(
+    "SELECT * FROM exercise ORDER BY RAND() LIMIT 1"
+  );
+  conn.end();
+  res.send(rows[0]);
+});
+
 module.exports = app;
